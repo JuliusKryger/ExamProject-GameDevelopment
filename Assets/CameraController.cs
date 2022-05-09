@@ -10,12 +10,15 @@ public class CameraController : MonoBehaviour
     public float fastSpeed;
     public float movementSpeed;
     public float movementTime;
+    public float rotationAmount;
     public Vector3 newPosition;
+    public Quaternion newRotation;
 
     // Start is called before the first frame update
     void Start()
     {
         newPosition = transform.position;
+        newRotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -53,7 +56,19 @@ public class CameraController : MonoBehaviour
             newPosition += (transform.right * -movementSpeed);
         }
 
+        // Rotation Input
+        if (Input.GetKey(KeyCode.Q))
+        {
+            newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
+        }
+
         // Making the movement more smooth rather then just setting the position of the transform.
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        //And the same for rotation.
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
     }
 }
