@@ -2,26 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Notes: We could also do Orthographic camera view instead of perspective maybe
+//Notes: We could also do Orthographic camera view instead of perspective maybe.
+//TODO: Fix when zooming in the camera is becomming 'janky' or getting 'spasms' xD
 
 public class CameraController : MonoBehaviour
 {
+    public Transform cameraTransform;
     public float normalSpeed;
     public float fastSpeed;
     public float movementSpeed;
     public float movementTime;
     public float rotationAmount;
+    public Vector3 zoomAmount;
     public Vector3 newPosition;
     public Quaternion newRotation;
+    public Vector3 newZoom;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     void Start()
     {
         newPosition = transform.position;
         newRotation = transform.rotation;
+        //we're using localPosition in order for it to stay relative to our camera rig.
+        newZoom = cameraTransform.localPosition;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.
     void Update()
     {
         HandleMovementInput();
@@ -56,7 +62,7 @@ public class CameraController : MonoBehaviour
             newPosition += (transform.right * -movementSpeed);
         }
 
-        // Rotation Input
+        // Rotation Input.
         if (Input.GetKey(KeyCode.Q))
         {
             newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
@@ -66,9 +72,21 @@ public class CameraController : MonoBehaviour
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
 
+        //Camera Zoom Input.
+        if (Input.GetKey(KeyCode.R))
+        {
+            newZoom += zoomAmount;
+        }
+        if (Input.GetKey(KeyCode.F))
+        {
+            newZoom -= zoomAmount;
+        }
+
         // Making the movement more smooth rather then just setting the position of the transform.
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         //And the same for rotation.
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+        //And for Zoom.
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
     }
 }
