@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Notes: We could also do Orthographic camera view instead of perspective maybe
+
 public class CameraController : MonoBehaviour
 {
+    public float normalSpeed;
+    public float fastSpeed;
     public float movementSpeed;
     public float movementTime;
     public Vector3 newPosition;
@@ -22,6 +26,15 @@ public class CameraController : MonoBehaviour
 
     void HandleMovementInput () 
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            movementSpeed = fastSpeed;
+        }
+        else
+        {
+            movementSpeed = normalSpeed;
+        }
+
         // This is the movement supporting both "WASD" and "Arrow" keys cuz' why not.
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
