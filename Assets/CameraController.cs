@@ -23,7 +23,6 @@ public class CameraController : MonoBehaviour
     void HandleMovementInput () 
     {
         // This is the movement supporting both "WASD" and "Arrow" keys cuz' why not.
-
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             newPosition += (transform.forward * movementSpeed);
@@ -38,7 +37,7 @@ public class CameraController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            newPosition += (transform.forward * -movementSpeed);
+            newPosition += (transform.right * -movementSpeed);
         }
 
         // Making the movement more smooth rather then just setting the position of the transform.
